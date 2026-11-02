@@ -1,12 +1,9 @@
-# Diahope Christ Foundation Telegram Bot
+# Diahope Telegram Bot — Render Web Service starter
 
-Bilingual English/Amharic Telegram bot starter.
+English/Amharic Telegram bot using Telegram webhooks.
 
-## Setup
-1. Install Python 3.11+.
-2. Install dependencies: `pip install -r requirements.txt`.
-3. Set `TELEGRAM_BOT_TOKEN` as an environment variable (never commit the token).
-4. Set `DIAHOPE_WEBSITE_URL` to the foundation's published HTTPS website.
-5. Run `python bot.py`.
+Render configuration: Web Service; Build Command `pip install -r requirements.txt`; Start Command `python bot.py`; select Free plan if available.
 
-Donation and contact replies are placeholders until official verified details are provided.
+Required environment variables: `TELEGRAM_BOT_TOKEN`, `WEBHOOK_SECRET` (long random string), `DIAHOPE_WEBSITE_URL` (actual published website URL). Render supplies `RENDER_EXTERNAL_URL` and `PORT`.
+
+Donation/contact answers are placeholders pending verified official details. Never publish or commit the token.
