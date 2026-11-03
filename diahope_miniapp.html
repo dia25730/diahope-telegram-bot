@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#32145c">
 <title>Diahope Christ Foundation</title>
 
@@ -25,6 +25,7 @@
 }
 
 body {
+  min-width: 320px;
   margin: 0;
   font-family: Arial, sans-serif;
   background: var(--bg);
@@ -177,6 +178,7 @@ textarea {
   padding: 12px;
   background: #fcfaff;
   color: var(--text);
+  font-size: 16px;
   outline: none;
 }
 
@@ -208,6 +210,7 @@ textarea {
   width: 100%;
   border: none;
   border-radius: 13px;
+  min-height: 48px;
   padding: 14px;
   background: var(--purple);
   color: white;
@@ -252,7 +255,7 @@ footer strong {
   color: var(--purple);
 }
 
-@media (max-width: 360px) {
+@media (max-width: 400px) {
   .grid {
     grid-template-columns: 1fr;
   }
@@ -455,10 +458,10 @@ footer strong {
   const tg = window.Telegram && window.Telegram.WebApp;
 
   if (tg) {
-    tg.ready();
-    tg.expand();
-    tg.setHeaderColor("#32145c");
-    tg.setBackgroundColor("#faf8fd");
+    if (typeof tg.ready === "function") tg.ready();
+    if (typeof tg.expand === "function") tg.expand();
+    if (typeof tg.setHeaderColor === "function") tg.setHeaderColor("#32145c");
+    if (typeof tg.setBackgroundColor === "function") tg.setBackgroundColor("#faf8fd");
   }
 
   const englishButton = document.getElementById("english");

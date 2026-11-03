@@ -1,14 +1,22 @@
-import os
+import hmac
 import logging
+import os
+from urllib.parse import urlparse
+
 import requests
 from flask import Flask, request
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
-WEBSITE_URL = os.environ.get("DIAHOPE_WEBSITE_URL", "https://example.com")
-WEBHOOK_SECRET = os.environ["WEBHOOK_SECRET"]
+TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+if not TOKEN:
+    raise RuntimeError("TELEGRAM_BOT_TOKEN must be configured.")
+
+WEBSITE_URL = os.environ.get("DIAHOPE_WEBSITE_URL", "").strip()
+WEBHOOK_SECRET = os.environ.get("WEBHOOK_SECRET", "").strip()
+if not WEBHOOK_SECRET:
+    raise RuntimeError("WEBHOOK_SECRET must be configured.")
 PORT = int(os.environ.get("PORT", "10000"))
 API = f"https://api.telegram.org/bot{TOKEN}"
 
@@ -76,16 +84,59 @@ REPLIES = {
     ),
 }
 
-def send_message(chat_id, text, include_website=False):
+def _is_https_url(value):
+    try:
+        parsed = urlparse(value)
+        return parsed.scheme.lower() == "https" and bool(parsed.netloc)
+    except ValueError:
+        return False
+
+
+def _is_web_url(value):
+    try:
+        parsed = urlparse(value)
+        return parsed.scheme.lower() in {"http", "https"} and bool(parsed.netloc)
+    except ValueError:
+        return False
+
+
+def _mini_app_url():
+    configured = os.environ.get("MINI_APP_URL", "").strip()
+    if configured:
+        return configured if _is_https_url(configured) else ""
+
+    base_url = os.environ.get("RENDER_EXTERNAL_URL", "").strip().rstrip("/")
+    if _is_https_url(base_url):
+        return f"{base_url}/app"
+    return ""
+
+
+def send_message(chat_id, text, include_website=False, include_miniapp=False):
     payload = {"chat_id": chat_id, "text": text}
-    if include_website:
-        payload["reply_markup"] = {
-            "inline_keyboard": [[{"text": "Visit Diahope website 🌐", "url": WEBSITE_URL}]]
-        }
+    keyboard = []
+
+    if include_miniapp:
+        mini_app_url = _mini_app_url()
+        if mini_app_url:
+            keyboard.append([{
+                "text": "Open Diahope Mini App 💜",
+                "web_app": {"url": mini_app_url},
+            }])
+
+    if include_website and _is_web_url(WEBSITE_URL):
+        keyboard.append([{
+            "text": "Visit Diahope website 🌐",
+            "url": WEBSITE_URL,
+        }])
+
+    if keyboard:
+        payload["reply_markup"] = {"inline_keyboard": keyboard}
+
     response = requests.post(f"{API}/sendMessage", json=payload, timeout=20)
     response.raise_for_status()
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 1_000_000
 from miniapp import miniapp_bp
 app.register_blueprint(miniapp_bp)
 @app.get("/")
@@ -94,7 +145,10 @@ def health():
 
 @app.post("/telegram")
 def telegram_webhook():
-    if request.headers.get("X-Telegram-Bot-Api-Secret-Token", "") != WEBHOOK_SECRET:
+    if not hmac.compare_digest(
+        request.headers.get("X-Telegram-Bot-Api-Secret-Token", ""),
+        WEBHOOK_SECRET,
+    ):
         return "Unauthorized", 401
 
     update = request.get_json(silent=True) or {}
@@ -108,7 +162,12 @@ def telegram_webhook():
 
     command = text.split()[0].split("@")[0].lower()
     if command == "/start":
-        send_message(chat_id, WELCOME, include_website=True)
+        send_message(
+            chat_id,
+            WELCOME,
+            include_website=True,
+            include_miniapp=True,
+        )
     elif command in REPLIES:
         send_message(chat_id, REPLIES[command])
     elif text.startswith("/"):
@@ -121,13 +180,32 @@ def telegram_webhook():
         )
     return "OK", 200
 
-if __name__ == "__main__":
-    webhook_url = os.environ["RENDER_EXTERNAL_URL"].rstrip("/") + "/telegram"
+def configure_webhook():
+    if not (1 <= len(WEBHOOK_SECRET) <= 256) or not all(
+        char in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-" for char in WEBHOOK_SECRET
+    ):
+        raise RuntimeError(
+            "WEBHOOK_SECRET must use 1–256 letters, numbers, underscores, or hyphens."
+        )
+
+    base_url = os.environ.get("RENDER_EXTERNAL_URL", "").strip().rstrip("/")
+    if not _is_https_url(base_url):
+        raise RuntimeError(
+            "RENDER_EXTERNAL_URL must be set to the HTTPS Render service URL."
+        )
+
     response = requests.post(
         f"{API}/setWebhook",
-        json={"url": webhook_url, "secret_token": WEBHOOK_SECRET, "drop_pending_updates": True},
+        json={
+            "url": f"{base_url}/telegram",
+            "secret_token": WEBHOOK_SECRET,
+        },
         timeout=20,
     )
     response.raise_for_status()
     logger.info("Telegram webhook configured.")
+
+
+if __name__ == "__main__":
+    configure_webhook()
     app.run(host="0.0.0.0", port=PORT)
