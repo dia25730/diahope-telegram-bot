@@ -17,16 +17,23 @@
   --white: #ffffff;
   --text: #30243d;
   --muted: #766b80;
+  --bg: #faf8fd;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #faf8fd;
+  background: var(--bg);
   color: var(--text);
   line-height: 1.6;
+}
+
+button, input, textarea {
+  font: inherit;
 }
 
 header {
@@ -38,15 +45,15 @@ header {
 }
 
 .logo {
-  width: 70px;
-  height: 70px;
+  width: 75px;
+  height: 75px;
   margin: auto auto 12px;
   border: 2px solid var(--gold);
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: var(--gold);
-  font-size: 30px;
+  font-size: 32px;
 }
 
 header h1 {
@@ -79,6 +86,7 @@ header p {
   background: transparent;
   border-radius: 20px;
   padding: 8px 16px;
+  cursor: pointer;
 }
 
 .language button.active {
@@ -114,7 +122,6 @@ main {
   border: 1px solid #eee7f5;
   border-radius: 17px;
   padding: 17px 14px;
-  text-align: left;
   box-shadow: 0 3px 12px #32145c0a;
 }
 
@@ -152,4 +159,426 @@ section h2 {
   width: 45px;
   height: 3px;
   background: var(--gold);
-  margin: 8px 0
+  margin: 8px 0 18px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 14px 0 6px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  border: 1px solid #ded3ec;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fcfaff;
+  color: var(--text);
+  outline: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--purple);
+}
+
+textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.checkbox {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13px;
+  font-weight: normal;
+  margin: 14px 0;
+}
+
+.checkbox input {
+  margin-top: 5px;
+}
+
+.primary-btn {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 13px;
+  padding: 14px;
+  background: var(--purple);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 18px;
+}
+
+.primary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: none;
+}
+
+.status.success {
+  display: block;
+  background: #e7f7ec;
+  color: #176534;
+}
+
+.status.error {
+  display: block;
+  background: #fff0f0;
+  color: #9b2424;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 15px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+footer strong {
+  color: var(--purple);
+}
+
+@media (max-width: 360px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✝</div>
+
+  <h1 data-en="Diahope Christ Foundation"
+      data-am="ዲያሆፕ ክርስቶስ ፋውንዴሽን">
+    Diahope Christ Foundation
+  </h1>
+
+  <p class="slogan">
+    Different Abilities. Equal Dignity. Unlimited Hope.
+  </p>
+
+  <p data-en="A place of faith, love, dignity and hope."
+     data-am="የእምነት፣ የፍቅር፣ የክብር እና የተስፋ ቦታ።">
+    A place of faith, love, dignity and hope.
+  </p>
+
+  <div class="language">
+    <button class="active" id="english">English</button>
+    <button id="amharic">አማርኛ</button>
+  </div>
+</header>
+
+<main>
+
+<div class="intro">
+  <h2 data-en="Welcome to Diahope"
+      data-am="ወደ ዲያሆፕ እንኳን በደህና መጡ">
+    Welcome to Diahope
+  </h2>
+
+  <p data-en="Every person is created with purpose, value and dignity. Together, we bring hope through Christ's love."
+     data-am="እያንዳንዱ ሰው በዓላማ፣ በዋጋ እና በክብር ተፈጥሯል። በክርስቶስ ፍቅር ተስፋን እናመጣለን።">
+    Every person is created with purpose, value and dignity.
+    Together, we bring hope through Christ's love.
+  </p>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="icon">💜</div>
+    <h3 data-en="Our Mission"
+        data-am="ተልዕኮአችን">Our Mission</h3>
+    <p data-en="To serve children with different abilities through love, care and faith."
+       data-am="የተለያዩ ችሎታዎች ያላቸውን ልጆች በፍቅር፣ በእንክብካቤ እና በእምነት ማገልገል።">
+      To serve children with different abilities through love, care and faith.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="icon">🌟</div>
+    <h3 data-en="Our Vision"
+        data-am="ራዕያችን">Our Vision</h3>
+    <p data-en="A world where every child is valued and included."
+       data-am="እያንዳንዱ ልጅ የሚከበርበት እና የሚካተትበት ዓለም።">
+      A world where every child is valued and included.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="icon">🙏</div>
+    <h3 data-en="Prayer"
+        data-am="ጸሎት">Prayer</h3>
+    <p data-en="We believe in the power of prayer and God's unfailing love."
+       data-am="በጸሎት ኃይል እና በእግዚአብሔር የማይጠፋ ፍቅር እናምናለን።">
+      We believe in the power of prayer and God's unfailing love.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="icon">🤝</div>
+    <h3 data-en="Community"
+        data-am="ማህበረሰብ">Community</h3>
+    <p data-en="Together we build a community of compassion and belonging."
+       data-am="በአንድነት የርህራሄ እና የተሳትፎ ማህበረሰብ እንገነባለን።">
+      Together we build a community of compassion and belonging.
+    </p>
+  </div>
+
+</div>
+
+<section id="prayer">
+  <h2 data-en="Prayer Request"
+      data-am="የጸሎት ጥያቄ">
+    Prayer Request
+  </h2>
+
+  <div class="gold-line"></div>
+
+  <p data-en="Share your prayer request with us. We would be honored to pray with you."
+     data-am="የጸሎት ጥያቄዎን ከእኛ ጋር ያካፍሉ። ከእርስዎ ጋር መጸለይ ክብር ይሆንልናል።">
+    Share your prayer request with us. We would be honored to pray with you.
+  </p>
+
+  <form id="prayerForm">
+
+    <label for="name"
+      data-en="Your Name (optional)"
+      data-am="ስምዎ (አማራጭ)">
+      Your Name (optional)
+    </label>
+
+    <input
+      type="text"
+      id="name"
+      name="name"
+      maxlength="60"
+      placeholder="Your name">
+
+    <label for="request"
+      data-en="Your Prayer Request"
+      data-am="የጸሎት ጥያቄዎ">
+      Your Prayer Request
+    </label>
+
+    <textarea
+      id="request"
+      name="request"
+      minlength="5"
+      maxlength="1000"
+      required
+      placeholder="Write your prayer request here..."></textarea>
+
+    <label class="checkbox">
+      <input type="checkbox" id="anonymous">
+      <span data-en="Submit my prayer request anonymously."
+            data-am="የጸሎት ጥያቄዬን በስም ሳይጠቀስ ላክ።">
+        Submit my prayer request anonymously.
+      </span>
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" id="consent" required>
+      <span data-en="I consent to my prayer request being sent privately to the foundation's prayer team."
+            data-am="የጸሎት ጥያቄዬ በግል ወደ ፋውንዴሽኑ የጸሎት ቡድን እንዲላክ እስማማለሁ።">
+        I consent to my prayer request being sent privately to the foundation's prayer team.
+      </span>
+    </label>
+
+    <!-- Spam protection -->
+    <input
+      type="text"
+      id="website"
+      name="website"
+      tabindex="-1"
+      autocomplete="off"
+      style="position:absolute;left:-9999px"
+      aria-hidden="true">
+
+    <button
+      type="submit"
+      class="primary-btn"
+      id="submitButton"
+      data-en="Send Prayer Request 🙏"
+      data-am="የጸሎት ጥያቄ ላክ 🙏">
+      Send Prayer Request 🙏
+    </button>
+
+    <div id="status" class="status" role="status"></div>
+
+  </form>
+</section>
+
+<section>
+  <h2 data-en="A Message of Hope"
+      data-am="የተስፋ መልእክት">
+    A Message of Hope
+  </h2>
+
+  <div class="gold-line"></div>
+
+  <p data-en="“For I know the thoughts that I think toward you, saith the LORD, thoughts of peace, and not of evil, to give you an expected end.” — Jeremiah 29:11 (KJV)"
+     data-am="“እኔ ስለ እናንተ የማስበውን ሐሳብ አውቃለሁ፤ የሰላም እንጂ የክፋት አይደለም።” — ኤርምያስ 29:11">
+    “For I know the thoughts that I think toward you, saith the LORD,
+    thoughts of peace, and not of evil, to give you an expected end.”
+    — Jeremiah 29:11 (KJV)
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <strong>Diahope Christ Foundation</strong>
+  <p>Different Abilities. Equal Dignity. Unlimited Hope.</p>
+  <p>Made with 💜 and faith in Christ.</p>
+</footer>
+
+<script>
+(function () {
+  const tg = window.Telegram && window.Telegram.WebApp;
+
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    tg.setHeaderColor("#32145c");
+    tg.setBackgroundColor("#faf8fd");
+  }
+
+  const englishButton = document.getElementById("english");
+  const amharicButton = document.getElementById("amharic");
+
+  function setLanguage(language) {
+    document.documentElement.lang = language;
+
+    document.querySelectorAll("[data-en][data-am]").forEach(function (element) {
+      element.textContent = element.dataset[language];
+    });
+
+    englishButton.classList.toggle("active", language === "en");
+    amharicButton.classList.toggle("active", language === "am");
+  }
+
+  englishButton.addEventListener("click", function () {
+    setLanguage("en");
+  });
+
+  amharicButton.addEventListener("click", function () {
+    setLanguage("am");
+  });
+
+  const form = document.getElementById("prayerForm");
+  const status = document.getElementById("status");
+  const submitButton = document.getElementById("submitButton");
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    status.className = "status";
+    status.textContent = "";
+
+    const prayerText = document.getElementById("request").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const anonymous = document.getElementById("anonymous").checked;
+    const consent = document.getElementById("consent").checked;
+    const website = document.getElementById("website").value;
+
+    if (prayerText.length < 5 || prayerText.length > 1000) {
+      status.className = "status error";
+      status.textContent = "Please enter a prayer request between 5 and 1000 characters.";
+      return;
+    }
+
+    if (!consent) {
+      status.className = "status error";
+      status.textContent = "Please confirm your consent.";
+      return;
+    }
+
+    if (!tg || !tg.initData) {
+      status.className = "status error";
+      status.textContent = "Please open this Mini App through Telegram.";
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending...";
+
+    try {
+      const response = await fetch("/api/prayer", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          initData: tg.initData,
+          request: prayerText,
+          name: name,
+          anonymous: anonymous,
+          consent: consent,
+          website: website
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || "send_failed");
+      }
+
+      status.className = "status success";
+      status.textContent =
+        "Your prayer request has been sent privately. We will pray with you. 💜";
+
+      form.reset();
+
+      if (tg.HapticFeedback) {
+        tg.HapticFeedback.notificationOccurred("success");
+      }
+
+    } catch (error) {
+      status.className = "status error";
+
+      if (error.message === "unauthorized") {
+        status.textContent =
+          "Your Telegram session could not be verified. Please reopen the Mini App.";
+      } else if (error.message === "not_configured") {
+        status.textContent =
+          "The prayer service is not configured yet. Please try again later.";
+      } else if (error.message === "rate_limited") {
+        status.textContent =
+          "You have reached the prayer request limit. Please try again later.";
+      } else {
+        status.textContent =
+          "We couldn't send your prayer request. Please try again later.";
+      }
+
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent =
+        document.documentElement.lang === "am"
+          ? "የጸሎት ጥያቄ ላክ 🙏"
+          : "Send Prayer Request 🙏";
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
