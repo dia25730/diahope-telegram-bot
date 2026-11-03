@@ -86,7 +86,8 @@ def send_message(chat_id, text, include_website=False):
     response.raise_for_status()
 
 app = Flask(__name__)
-
+from miniapp import miniapp_bp
+app.register_blueprint(miniapp_bp)
 @app.get("/")
 def health():
     return "Diahope bot is running 💜", 200
